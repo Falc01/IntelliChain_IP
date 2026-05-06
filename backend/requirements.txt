@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+motor
+ollama
+python-dotenv
+pydantic
+numpy
+pytest
+httpx
