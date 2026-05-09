@@ -10,6 +10,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 // Adicione aqui a sua chave pública (Wallet Address)
 const ADMIN_WHITELIST = [
     'BJBc6WdVA5sokqMqPWTxu8hk9UnU3LDMk1ovFD89iw4T',
+    '9akx1Qvi4RQ2cXNz1eig8gSGPBB1ko6u1pmukzdqX5eX',
 ];
 
 const MOCK_PENDING_IPS = [

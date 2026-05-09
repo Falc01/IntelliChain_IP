@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 
 // Este é o ID único do seu contrato na Solana.
 // O Anchor gera isso automaticamente no seu primeiro build.
-declare_id!("EJFmF3hjjsmqCCnZGn6Sk7SXbBRts7A3f527Dz4cETG6");
+declare_id!("AizcNEQx22DRGkRZMJURJgao3SJwkYC51YHhVDab8jth");
 
 #[program]
 pub mod copyright_registry {
@@ -12,22 +12,21 @@ pub mod copyright_registry {
     pub fn register_copyright(
         ctx: Context<RegisterCopyright>, 
         content_hash: String, 
-        title: String
+        title: String,
+        is_pending: bool
     ) -> Result<()> {
-        // Pegamos a referência mutável da conta onde os dados serão salvos
         let copyright_account = &mut ctx.accounts.copyright_account;
-        
-        // Pega o relógio interno da blockchain para registrar a data exata
         let clock = Clock::get()?; 
 
-        // Salvando os dados recebidos dentro da conta
         copyright_account.owner = ctx.accounts.user.key();
         copyright_account.content_hash = content_hash;
         copyright_account.title = title;
         copyright_account.timestamp = clock.unix_timestamp;
+        
+        // Define o status: 0 para pendente, 1 para aprovado
+        copyright_account.status = if is_pending { 0 } else { 1 };
 
-        // Imprime uma mensagem de log na transação
-        msg!("Direito autoral registrado com sucesso: {}!", copyright_account.title);
+        msg!("Direito autoral registrado (Status: {}): {}!", copyright_account.status, copyright_account.title);
         
         Ok(())
     }
@@ -38,19 +37,16 @@ pub mod copyright_registry {
 /// ------------------------------------------------------------------------
 #[derive(Accounts)]
 pub struct RegisterCopyright<'info> {
-    // Definimos como a nova conta de registro será criada
     #[account(
-        init, // Diz ao Anchor para inicializar (criar) esta conta
-        payer = user, // Quem vai pagar a taxa de criação da conta (o usuário/backend)
-        space = 8 + CopyrightData::INIT_SPACE // Cálculo do espaço necessário na blockchain
+        init,
+        payer = user,
+        space = 8 + CopyrightData::INIT_SPACE
     )]
     pub copyright_account: Account<'info, CopyrightData>,
 
-    // A pessoa que está assinando a transação e pagando as taxas
     #[account(mut)]
     pub user: Signer<'info>,
 
-    // Programa de sistema da Solana, necessário para criar novas contas
     pub system_program: Program<'info, System>,
 }
 
@@ -58,15 +54,16 @@ pub struct RegisterCopyright<'info> {
 /// ESTRUTURA DOS DADOS (O que fica salvo na Blockchain)
 /// ------------------------------------------------------------------------
 #[account]
-#[derive(InitSpace)] // Macro útil para calcular o tamanho da conta automaticamente
+#[derive(InitSpace)]
 pub struct CopyrightData {
-    pub owner: Pubkey,             // Chave da carteira do dono (32 bytes)
+    pub owner: Pubkey,
     
-    #[max_len(64)]                 // Tamanho máximo do hash em string (ex: SHA-256)
+    #[max_len(64)]
     pub content_hash: String, 
     
-    #[max_len(50)]                 // Tamanho máximo do título
+    #[max_len(50)]
     pub title: String,
     
-    pub timestamp: i64,            // Data e hora do registro
+    pub timestamp: i64,
+    pub status: u8, // 0 = Pendente, 1 = Aprovado
 }

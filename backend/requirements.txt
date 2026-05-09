@@ -7,3 +7,5 @@ pydantic
 numpy
 pytest
 httpx
+pytest-html
+pytest-asyncio

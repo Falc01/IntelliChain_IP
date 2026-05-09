@@ -1,0 +1,103 @@
+{
+  "address": "AizcNEQx22DRGkRZMJURJgao3SJwkYC51YHhVDab8jth",
+  "metadata": {
+    "name": "copyright_registry",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "register_copyright",
+      "docs": [
+        "Função principal que será chamada para registrar um novo direito autoral"
+      ],
+      "discriminator": [
+        43,
+        215,
+        126,
+        228,
+        25,
+        8,
+        110,
+        87
+      ],
+      "accounts": [
+        {
+          "name": "copyright_account",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "content_hash",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "is_pending",
+          "type": "bool"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CopyrightData",
+      "discriminator": [
+        28,
+        214,
+        180,
+        49,
+        3,
+        253,
+        79,
+        173
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "CopyrightData",
+      "docs": [
+        "------------------------------------------------------------------------",
+        "ESTRUTURA DOS DADOS (O que fica salvo na Blockchain)",
+        "------------------------------------------------------------------------"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "content_hash",
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}

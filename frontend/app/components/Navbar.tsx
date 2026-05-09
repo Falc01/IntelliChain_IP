@@ -26,7 +26,7 @@ export const Navbar = () => {
                     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
                         <Link href="/" className="hover:text-white transition-colors">Dashboard</Link>
                         <Link href="/admin" className="hover:text-white transition-colors">Admin</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Documentação</Link>
+                        <Link href="/docs" className="hover:text-white transition-colors">Documentação</Link>
                     </div>
 
                     <div className="flex items-center gap-4">
