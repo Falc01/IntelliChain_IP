@@ -11,8 +11,9 @@ import { clusterApiUrl } from '@solana/web3.js';
 // Configurações de rede e carteira Solana
 
 export const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    // Definimos a rede para Localhost (seu computador)
-    const endpoint = "http://127.0.0.1:8899";
+    // Definimos a rede para a Devnet oficial da Solana
+    const network = WalletAdapterNetwork.Devnet;
+    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
 
     // Carteiras suportadas
